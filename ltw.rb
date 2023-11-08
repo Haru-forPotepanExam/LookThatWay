@@ -1,5 +1,7 @@
 class Look_that_way
+
   class << self
+    
     def rps
       puts "じゃんけん..."
       
@@ -9,9 +11,9 @@ class Look_that_way
         puts "0(グー) 1(チョキ) 2(パー) 3(戦わない)"
         select_num = gets.to_i
         keep_random = random_rps
-        @result_rps = ""
+        @result_rps = nil
         
-        if select_num == 0
+        if select_num == 0 
           hand = "グー"
         elsif select_num == 1
           hand = "チョキ"
@@ -19,7 +21,7 @@ class Look_that_way
           hand = "パー"
         end
         
-        if keep_random == 0
+        if keep_random == 0 
           u_hand = "グー"
         elsif keep_random == 1
           u_hand = "チョキ"
@@ -41,7 +43,7 @@ class Look_that_way
           @result_rps = "error"
         end
         
-        if @result_rps == "escape"
+        if @result_rps == "escape" 
           puts "バイバイ！"
           exit
         elsif @result_rps == "error"
@@ -49,7 +51,7 @@ class Look_that_way
           redo
         else
           puts "ホイ！", "-------------------------------------", "あなた：#{hand}を出しました", "相手：#{u_hand}を出しました", "-------------------------------------"
-          if @result_rps == "draw"
+          if @result_rps == "draw" 
             puts "あいこで..."
             redo
           elsif @result_rps == "win" || @result_rps == "lose"
@@ -60,73 +62,37 @@ class Look_that_way
     end
     
     #あっち向いてホイの処理
-    
     def ltw
-      puts "あっち向いて〜"
+      puts "あっち向いて〜", "0(上) 1(下) 2(左) 3(右)"
       random_ltw = rand(4)
+      keep_random2 = random_ltw
       
-      loop do
-        puts "0(上) 1(下) 2(左) 3(右)"
-        select_num2 = gets.to_i
-        keep_random2 = random_ltw
-        @result_ltw = ""
-        
-        if select_num2 == 0
-          way = "上"
-        elsif select_num2 == 1
-          way = "下"
-        elsif select_num2 == 2
-          way = "左"
-        elsif select_num2 == 3
-          way = "右"
-        end
-        
-        if keep_random2 == 0
-          u_way = "上"
-        elsif keep_random2 == 1
-          u_way = "下"
-        elsif keep_random2 == 2
-          u_way = "左"
-        elsif keep_random2 == 3
-          u_way = "右"
-        end
-        
-        #あっち向いてほいの勝敗制御
-        if select_num2 == keep_random2
-          @result_ltw = "end"
-        elsif select_num2 != (0..3)
-          @result_ltw = "error"
-        else
-          @result_ltw = "continue"
-        end
-        
-        #あっち向いてホイの処理
-        case
-        when @result_rps == "win" && @result_ltw == "end"
-          puts "ホイ！", "-------------------------------------", "あなた：#{way}を出しました", "相手：#{u_way}を出しました", "-------------------------------------"
+      
+      @select_num2 = gets.to_i
+      while @select_num2 > 3
+        puts "0-3の数字を入力してください。", "0(上) 1(下) 2(左) 3(右)"
+        @select_num2 = gets.to_i
+      end
+      way = ["上","下","左","右"]
+       
+      if @select_num2 != keep_random2
+        puts "ホイ！", "-------------------------------------", "あなた：#{way[@select_num2]}を出しました", "相手：#{way[keep_random2]}を出しました", "-------------------------------------"
+        rps
+      else
+        if @result_rps == "win"
+          puts "ホイ！", "-------------------------------------", "あなた：#{way[@select_num2]}を出しました", "相手：#{way[keep_random2]}を出しました", "-------------------------------------"
           puts "勝ちました！"
           exit
-        when @result_rps == "win" && @result_ltw == "continue"
-          puts "ホイ！", "-------------------------------------", "あなた：#{way}を出しました", "相手：#{u_way}を出しました", "-------------------------------------"
-          rps
-        when @result_rps == "lose" && @result_ltw == "end"
-          puts "ホイ！", "-------------------------------------", "あなた：#{way}を出しました", "相手：#{u_way}を出しました", "-------------------------------------"
+        elsif @result_rps == "lose"
+          puts "ホイ！", "-------------------------------------", "あなた：#{way[@select_num2]}を出しました", "相手：#{way[keep_random2]}を出しました", "-------------------------------------"
           puts "負けました..."
           exit
-        when @result_rps == "lose" && @result_ltw == "continue"
-          puts "ホイ！", "-------------------------------------", "あなた：#{way}を出しました", "相手：#{u_way}を出しました", "-------------------------------------"
-          rps
-        else
-          if @result_ltw == "error"
-            select_num2 = ""
-            puts "0-3の数字を入力してください"
-            redo
-          end
         end
       end
     end
   end
 end
+
 
 Look_that_way.rps()
 Look_that_way.ltw()
